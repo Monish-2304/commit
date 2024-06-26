@@ -1,14 +1,22 @@
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import classNames from 'classnames';
+import { useEffect } from 'react';
 const LoginPage = ({ isLogin }) => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm({
         criteriaMode: 'all',
     });
+    
+    useEffect(()=>{
+        reset();
+    },[isLogin,reset]);
+
     const onSubmit = (data) => console.log(data);
     return (
         <div>
@@ -25,7 +33,10 @@ const LoginPage = ({ isLogin }) => {
                     >
                         {isLogin && (
                             <input
-                                className=" border-solid border-[1px] p-2 border-black rounded-md w-64"
+                                className={classNames(
+                                    "border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100",
+                                    { "border-red-500": errors.multipleErrorInput }
+                                )}
                                 placeholder="Username"
                                 type="text"
                                 {...register('multipleErrorInput', {
@@ -51,11 +62,10 @@ const LoginPage = ({ isLogin }) => {
                             errors={errors}
                             name="multipleErrorInput"
                             render={({ messages }) => {
-                                console.log('messages', messages);
                                 return messages
                                     ? Object.entries(messages).map(
                                           ([type, message]) => (
-                                              <p key={type}>{message}</p>
+                                              <p key={type} className="text-red-500 text-sm">{message}</p>
                                           )
                                       )
                                     : null;
@@ -63,7 +73,10 @@ const LoginPage = ({ isLogin }) => {
                         />
 
                         <input
-                            className=" border-solid border-[1px] p-2 border-black rounded-md w-64"
+                            className={classNames(
+                                "border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100",
+                                { "border-red-500": errors.email }
+                            )}
                             placeholder="Email"
                             type="email"
                             {...register('email', {
@@ -77,18 +90,20 @@ const LoginPage = ({ isLogin }) => {
                             errors={errors}
                             name="email"
                             render={({ messages }) => {
-                                console.log('messages', messages);
                                 return messages
                                     ? Object.entries(messages).map(
                                           ([type, message]) => (
-                                              <p key={type}>{message}</p>
+                                              <p key={type} className="text-red-500 text-sm">{message}</p>
                                           )
                                       )
                                     : null;
                             }}
                         />
                         <input
-                            className=" border-solid border-[1px] p-2 border-black rounded-md w-64"
+                            className={classNames(
+                                "border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100",
+                                { "border-red-500": errors.password }
+                            )}
                             placeholder="Password"
                             type="password"
                             {...register('password', {
@@ -112,11 +127,10 @@ const LoginPage = ({ isLogin }) => {
                             errors={errors}
                             name="password"
                             render={({ messages }) => {
-                                console.log('messages', messages);
                                 return messages
                                     ? Object.entries(messages).map(
                                           ([type, message]) => (
-                                              <p key={type}>{message}</p>
+                                              <p key={type} className="text-red-500 text-sm">{message}</p>
                                           )
                                       )
                                     : null;
@@ -137,4 +151,5 @@ const LoginPage = ({ isLogin }) => {
 LoginPage.propTypes = {
     isLogin: PropTypes.bool.isRequired,
 };
+
 export default LoginPage;
