@@ -3,7 +3,10 @@ import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import classNames from 'classnames';
 import { useEffect } from 'react';
-const LoginPage = ({ isLogin }) => {
+import { Link, useLocation } from 'react-router-dom';
+const LoginPage = () => {
+    const location = useLocation();
+    const isLogin = location.pathname === '/login';
     const {
         register,
         handleSubmit,
@@ -12,16 +15,16 @@ const LoginPage = ({ isLogin }) => {
     } = useForm({
         criteriaMode: 'all',
     });
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         reset();
-    },[isLogin,reset]);
+    }, [isLogin, reset]);
 
     const onSubmit = (data) => console.log(data);
     return (
         <div>
             <h2 className="text-center text-3xl mt-8">
-                {isLogin ? 'Signup' : 'Login'}
+                {!isLogin ? 'Signup' : 'Login'}
             </h2>
             <div className="flex justify-between">
                 <div className=" w-1/2"></div>
@@ -31,15 +34,15 @@ const LoginPage = ({ isLogin }) => {
                         method="post"
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        {isLogin && (
+                        {!isLogin && (
                             <input
                                 className={classNames(
-                                    "border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100",
-                                    { "border-red-500": errors.multipleErrorInput }
+                                    'border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100',
+                                    { 'border-red-500': errors.username }
                                 )}
                                 placeholder="Username"
                                 type="text"
-                                {...register('multipleErrorInput', {
+                                {...register('username', {
                                     required: {
                                         value: true,
                                         message: 'This field is required',
@@ -60,12 +63,17 @@ const LoginPage = ({ isLogin }) => {
 
                         <ErrorMessage
                             errors={errors}
-                            name="multipleErrorInput"
+                            name="username"
                             render={({ messages }) => {
                                 return messages
                                     ? Object.entries(messages).map(
                                           ([type, message]) => (
-                                              <p key={type} className="text-red-500 text-sm">{message}</p>
+                                              <p
+                                                  key={type}
+                                                  className="text-red-500 text-sm"
+                                              >
+                                                  {message}
+                                              </p>
                                           )
                                       )
                                     : null;
@@ -74,8 +82,8 @@ const LoginPage = ({ isLogin }) => {
 
                         <input
                             className={classNames(
-                                "border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100",
-                                { "border-red-500": errors.email }
+                                'border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100',
+                                { 'border-red-500': errors.email }
                             )}
                             placeholder="Email"
                             type="email"
@@ -83,6 +91,10 @@ const LoginPage = ({ isLogin }) => {
                                 required: {
                                     value: true,
                                     message: 'This field is required',
+                                },
+                                pattern: {
+                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                    message: 'Invalid email address',
                                 },
                             })}
                         />
@@ -93,7 +105,12 @@ const LoginPage = ({ isLogin }) => {
                                 return messages
                                     ? Object.entries(messages).map(
                                           ([type, message]) => (
-                                              <p key={type} className="text-red-500 text-sm">{message}</p>
+                                              <p
+                                                  key={type}
+                                                  className="text-red-500 text-sm"
+                                              >
+                                                  {message}
+                                              </p>
                                           )
                                       )
                                     : null;
@@ -101,8 +118,8 @@ const LoginPage = ({ isLogin }) => {
                         />
                         <input
                             className={classNames(
-                                "border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100",
-                                { "border-red-500": errors.password }
+                                'border p-3 rounded-lg w-64 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-300 ease-in-out shadow-lg bg-gray-100',
+                                { 'border-red-500': errors.password }
                             )}
                             placeholder="Password"
                             type="password"
@@ -130,26 +147,34 @@ const LoginPage = ({ isLogin }) => {
                                 return messages
                                     ? Object.entries(messages).map(
                                           ([type, message]) => (
-                                              <p key={type} className="text-red-500 text-sm">{message}</p>
+                                              <p
+                                                  key={type}
+                                                  className="text-red-500 text-sm"
+                                              >
+                                                  {message}
+                                              </p>
                                           )
                                       )
                                     : null;
                             }}
                         />
                         <input
-                            className="w-1/2 flex justify-center py-1 bg-[#BACAE8] border-l-4 border-r-4 border-[#E1AFD1] rounded-xl capitalize"
-                            value={isLogin ? 'Sign up' : 'Login'}
+                            className="w-1/2 flex justify-center py-1 bg-[#BACAE8] border-l-4 border-r-4 border-[#E1AFD1] rounded-xl capitalize cursor-pointer"
+                            value={!isLogin ? 'Sign up' : 'Login'}
                             type="submit"
                         />
+                       {isLogin && <h3>New Here? <Link to="/signup" className=' text-blue-700 font-semibold'>SignUp</Link></h3>}
+                       {!isLogin && <h3>Already have an account? <Link to="/login" className=' text-blue-700 font-semibold'>Login</Link></h3>}
                     </form>
+                    
                 </div>
             </div>
         </div>
     );
 };
 
-LoginPage.propTypes = {
-    isLogin: PropTypes.bool.isRequired,
-};
+// LoginPage.propTypes = {
+//     isLogin: PropTypes.bool.isRequired,
+// };
 
 export default LoginPage;
