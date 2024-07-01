@@ -1,11 +1,7 @@
-import React from 'react'
-
 const Home = () => {
-  return (
-    <div>
-      Home
-    </div>
-  )
-}
+    return (
+        <div className="text-xl text-center font-bold text-blue-700">Home</div>
+    );
+};
 
-export default Home
+export default Home;

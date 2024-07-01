@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import Cookies from 'js-cookie';
 const Protected = () => {
     const jwtToken = Cookies.get('jwtToken');
+
     if (jwtToken) {
         return <Outlet />;
     } else {
