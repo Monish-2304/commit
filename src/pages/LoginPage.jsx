@@ -9,8 +9,8 @@ const LoginPage = () => {
     const location = useLocation();
     const isLogin = location.pathname === '/login';
     const dispatch = useDispatch();
-    const { loading, error } = useSelector((state) => state.auth);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { loading, error, user } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -22,7 +22,10 @@ const LoginPage = () => {
 
     useEffect(() => {
         reset();
-    }, [isLogin, reset]);
+        if (user) {
+            navigate('/home');
+        }
+    }, [isLogin, reset, user]);
 
     const onSubmit = (data) => {
         if (isLogin) {

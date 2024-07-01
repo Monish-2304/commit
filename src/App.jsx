@@ -13,7 +13,7 @@ function App() {
         setIsLogin(status);
     };
     return (
-        <div className='bg-custom-gradient min-h-screen'>
+        <div className="bg-custom-gradient min-h-screen">
             <Header handleToggle={handleToggle} />
             <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />
@@ -22,7 +22,7 @@ function App() {
                     <Route path="/home" element={<Home />} />
                 </Route>
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<LoginPage/>} />
+                <Route path="/signup" element={<LoginPage />} />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
         </div>
