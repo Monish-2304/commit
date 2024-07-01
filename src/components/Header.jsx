@@ -16,7 +16,7 @@ const Header = ({ handleToggle }) => {
             <div>
                 <h2 className=" text-lg cursor-pointer">Commit</h2>
             </div>
-            <nav className="flex gap-x-6">
+            <nav className="flex gap-x-6 text-[#7C6D76]">
                 <h4 className=" cursor-pointer">Features</h4>
                 <h4 className=" cursor-pointer">About Us</h4>
                 <h4 className=" cursor-pointer">Contact Us</h4>

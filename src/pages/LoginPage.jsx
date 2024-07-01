@@ -41,7 +41,7 @@ const LoginPage = () => {
             )}
             {!loading && (
                 <div>
-                    <h2 className="text-center text-3xl mt-8">
+                    <h2 className="text-center text-3xl text-[#7C6D76] mt-8">
                         {!isLogin ? 'Signup' : 'Login'}
                     </h2>
                     <div className="flex justify-between">
@@ -181,12 +181,12 @@ const LoginPage = () => {
                                     }}
                                 />
                                 <input
-                                    className="w-1/2 flex justify-center py-1 bg-[#BACAE8] border-l-4 border-r-4 border-[#E1AFD1] rounded-xl capitalize cursor-pointer"
+                                    className="w-1/2 flex justify-center py-1 bg-[#BACAE8] border-l-4 border-r-4 border-[#E1AFD1] rounded-xl text-[#7C6D76] capitalize cursor-pointer"
                                     value={!isLogin ? 'Sign up' : 'Login'}
                                     type="submit"
                                 />
                                 {isLogin && (
-                                    <h3>
+                                    <h3 className="text-[#7C6D76]">
                                         New Here?{' '}
                                         <Link
                                             to="/signup"
@@ -197,7 +197,7 @@ const LoginPage = () => {
                                     </h3>
                                 )}
                                 {!isLogin && (
-                                    <h3>
+                                    <h3 className="text-[#7C6D76]">
                                         Already have an account?{' '}
                                         <Link
                                             to="/login"
