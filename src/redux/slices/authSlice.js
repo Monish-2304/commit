@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
-
+import { URLS } from '../../constants/common';
 const secretKey = process.env.REACT_APP_SECRET_KEY;
-const baseUrl = 'http://localhost:5000/api';
+
 const initialState = {
     user: null,
     token: null,
@@ -16,7 +16,7 @@ export const loginUser = createAsyncThunk(
     async (credentials, { rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `${baseUrl}/auth/login`,
+                `${URLS.BASE_URL}/auth/login`,
                 credentials,
                 { withCredentials: true }
             );
@@ -32,7 +32,7 @@ export const registerUser = createAsyncThunk(
     async (credentials, { rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `${baseUrl}/auth/register`,
+                `${URLS.BASE_URL}/auth/register`,
                 credentials,
                 { withCredentials: true }
             );
@@ -55,10 +55,15 @@ const authSlice = createSlice({
         },
         loadUserFromStorage: (state) => {
             const token = secureLocalStorage.getItem('token', secretKey);
-            const user = secureLocalStorage.getItem('user', secretKey);
-            if (token) {
-                state.token = token;
-                state.user = user;
+            const encryptedUser = secureLocalStorage.getItem('user', secretKey);
+            if (token && encryptedUser) {
+                try {
+                    const user = JSON.parse(encryptedUser);
+                    state.token = token;
+                    state.user = user;
+                } catch (error) {
+                    console.error('Failed to parse user from storage:', error);
+                }
             }
         },
     },
@@ -79,7 +84,7 @@ const authSlice = createSlice({
                 );
                 secureLocalStorage.setItem(
                     'user',
-                    action.payload.user,
+                    JSON.stringify(action.payload.user),
                     secretKey
                 );
             })
@@ -104,7 +109,7 @@ const authSlice = createSlice({
                 );
                 secureLocalStorage.setItem(
                     'user',
-                    action.payload.user,
+                    JSON.stringify(action.payload.user),
                     secretKey
                 );
             })
