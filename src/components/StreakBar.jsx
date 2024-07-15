@@ -3,13 +3,8 @@ import { FaFire } from 'react-icons/fa';
 
 const StreakBar = () => {
     return (
-        <div className="bg-[#E2BFB3] w-full h-28 flex gap-4 items-center fixed">
-            <div>
-                <FaFire size={20} />
-            </div>
-            <div>
-                Highest Streak
-            </div>
+        <div className="bg-black z-10 w-[80%]  h-16 px-4 flex gap-4 items-center fixed rounded-sm">
+            <div className="text-white">Feed</div>
         </div>
     );
 };

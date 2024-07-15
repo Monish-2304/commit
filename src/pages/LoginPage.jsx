@@ -35,13 +35,13 @@ const LoginPage = () => {
         }
     };
     return (
-        <div>
+        <div className="pt-16">
             {loading && (
                 <p className="text-4xl text-black text-center">Loading...</p>
             )}
             {!loading && (
-                <div>
-                    <h2 className="text-center text-3xl text-[#7C6D76] mt-8">
+                <div className="pt-16">
+                    <h2 className="text-center text-3xl text-[#7C6D76]">
                         {!isLogin ? 'Signup' : 'Login'}
                     </h2>
                     <div className="flex justify-between">
