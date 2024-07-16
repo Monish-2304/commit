@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../redux/slices/authSlice';
+import Button from '../components/Button';
 const LoginPage = () => {
     const location = useLocation();
     const isLogin = location.pathname === '/login';
@@ -180,11 +181,7 @@ const LoginPage = () => {
                                             : null;
                                     }}
                                 />
-                                <input
-                                    className="w-1/2 flex justify-center py-1 bg-[#BACAE8] border-l-4 border-r-4 border-[#E1AFD1] rounded-xl text-[#7C6D76] capitalize cursor-pointer"
-                                    value={!isLogin ? 'Sign up' : 'Login'}
-                                    type="submit"
-                                />
+                                <Button text={!isLogin?'Sign up':'Login'} color='bg-[#BACAE8]' width='w-1/2'/>
                                 {isLogin && (
                                     <h3 className="text-[#7C6D76]">
                                         New Here?{' '}
