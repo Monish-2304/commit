@@ -26,7 +26,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Button = ({ text, color, textSize,width, onClick }) => {
-  const buttonClasses = `py-2 rounded-xl px-2 rounded text-[#7C6D76] cursor-pointer transition-opacity duration-300 ${color} ${textSize} ${width? width:'w-auto'}`;
+  const buttonClasses = `py-2 rounded-xl px-2 text-[#7C6D76] cursor-pointer transition-transform transition-opacity duration-200 ${color} ${textSize} ${width? width:'w-auto'} transform hover:scale-105 hover:ring-2 hover:ring-${color} hover:shadow-xl`;
 
   return (
     <button className={buttonClasses} onClick={onClick}>
