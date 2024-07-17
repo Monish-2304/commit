@@ -8,6 +8,7 @@ import AddPost from '../components/AddPost';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Modal from '../components/Modal';
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,16 +51,23 @@ const Home = () => {
                 {isModalOpen && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                         <div className=" relative">
-                            <AddPost
-                                missions={userDetails.missions}
-                                userId={userDetails.userId}
+                            <Modal
+                                showModal={isModalOpen}
+                                handleClose={toggleModal}
+                                content={
+                                    <AddPost
+                                        missions={userDetails.missions}
+                                        userId={userDetails.userId}
+                                    />
+                                }
                             />
-                            <button
+
+                            {/* <button
                                 onClick={toggleModal}
                                 className="absolute top-3 right-2 text-gray-700"
                             >
                                 <FaWindowClose size={20} color="white" />
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 )}

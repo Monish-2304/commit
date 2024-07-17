@@ -20,15 +20,19 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IoCloseSharp } from "react-icons/io5";
+import { IoCloseSharp } from 'react-icons/io5';
 const Modal = ({ showModal, handleClose, content, width }) => {
     return (
         <>
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className={`bg-gray-200 rounded-lg shadow-lg p-6 relative ${width}`}>
-                        <IoCloseSharp className="text-gray-600 hover:text-black cursor-pointer absolute top-2 right-2 text-2xl font-bold"
-                            onClick={handleClose} />
+                    <div
+                        className={`bg-slate-900 rounded-lg shadow-lg relative ${width}`}
+                    >
+                        <IoCloseSharp
+                            className="text-gray-600 hover:text-black cursor-pointer absolute top-2 right-2 text-2xl font-bold"
+                            onClick={handleClose}
+                        />
                         {content}
                     </div>
                 </div>
