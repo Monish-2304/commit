@@ -32,11 +32,7 @@ const Home = () => {
         fetchUserDetails();
     }, []);
     return (
-        <div className="text-xl text-center text-[#7C6D76] flex h-screen w-screen bg-[#000000] overflow-x-hidden">
-            <div className="w-[18%] z-20">
-                <Sidebar />
-            </div>
-
+        <div>
             <div className="relative flex flex-col gap-8 w-[82%] h-screen ">
                 <StreakBar />
                 <Posts />

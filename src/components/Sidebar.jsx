@@ -3,9 +3,10 @@ import { FaHome, FaTasks, FaFire, FaBars } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/slices/authSlice';
+import SidebarButton from './SidebarButton';
 import Cookies from 'js-cookie';
 
-const Sidebar = () => {
+const Sidebar = ({onToggle}) => {
     const { user } = useSelector((state) => state.auth);
     const [isOpen, setIsOpen] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -14,9 +15,11 @@ const Sidebar = () => {
     const menuRef = useRef(null);
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
+        onToggle(!isOpen);
     };
     const openMenu = () => {
         setMenuOpen(!menuOpen);
+        
     };
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -32,7 +35,7 @@ const Sidebar = () => {
     }, [menuRef]);
 
     return (
-        <div className=" bg-black border-r-[1.5px] border-r-white shadow-slate-300 shadow-md  h-screen flex flex-col rounded-sm">
+        <div className={`fixed top-0 left-0 ${isOpen?"w-[18%]":"w-[8%]"} bg-black border-r-[1.5px] border-r-white shadow-slate-300 shadow-md  h-screen flex flex-col rounded-sm transition-width duration-300`}>
             <div className="flex justify-between m-4 gap-4 items-center">
                 <div className="relative" ref={menuRef}>
                     <div
@@ -40,7 +43,8 @@ const Sidebar = () => {
                         onClick={openMenu}
                     >
                         <div className="w-8 h-8 rounded-full bg-[#E7B1A6]"></div>
-                        <div>{user?.username}</div>
+                        
+                        {isOpen && <div>{user?.username}</div>}
                     </div>
 
                     {menuOpen && (
@@ -64,34 +68,13 @@ const Sidebar = () => {
                     )}
                 </div>
                 <div className="flex justify-between px-2">
-                    <FaBars size={20} />
+                    <FaBars size={20} onClick={toggleSidebar}/>
                 </div>
             </div>
             <div className="flex flex-col m-6 gap-4 overflow-y-auto">
-                <div>
-                    <button className="flex gap-3 justify-items-center items-center hover:bg-[#BACAE8] w-full">
-                        <div>
-                            <FaHome size={20} />
-                        </div>
-                        <div>Home</div>
-                    </button>
-                </div>
-                <div>
-                    <button className="flex gap-3 justify-items-center items-center hover:bg-[#BACAE8] w-full">
-                        <div>
-                            <FaTasks size={20} />
-                        </div>
-                        <div>Tasks</div>
-                    </button>
-                </div>
-                <div>
-                    <button className="flex gap-3 justify-items-center items-center hover:bg-[#BACAE8] w-full">
-                        <div>
-                            <FaFire size={20} />
-                        </div>
-                        <div>Streaks</div>
-                    </button>
-                </div>
+                <SidebarButton isOpen={isOpen} icon={FaHome} label="Home" />
+                <SidebarButton isOpen={isOpen} icon={FaTasks} label="Tasks" />
+                <SidebarButton isOpen={isOpen} icon={FaFire} label="Streaks" />
             </div>
         </div>
     );
