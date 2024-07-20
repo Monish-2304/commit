@@ -8,6 +8,7 @@ import AddPost from '../components/AddPost';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Modal from '../components/Modal';
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
