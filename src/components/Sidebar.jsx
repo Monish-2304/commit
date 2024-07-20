@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaHome, FaTasks, FaFire, FaBars } from 'react-icons/fa';
+import { AiOutlineAim } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../redux/slices/authSlice';
@@ -10,6 +11,7 @@ const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
+    const [activeButton, setActiveButton] = useState('/home');
     const dispatch = useDispatch();
     const menuRef = useRef(null);
     const toggleSidebar = () => {
@@ -31,8 +33,13 @@ const Sidebar = () => {
         };
     }, [menuRef]);
 
+    const handleNavigation = (path) => {
+        setActiveButton(path);
+        navigate(path);
+    };
+
     return (
-        <div className=" bg-black border-r-[1.5px] border-r-white shadow-slate-300 shadow-md  h-screen flex flex-col rounded-sm">
+        <div className=" bg-black border-r-[1.5px] text-[#7C6D76] border-r-white shadow-slate-300 shadow-md  h-screen flex flex-col rounded-sm ">
             <div className="flex justify-between m-4 gap-4 items-center">
                 <div className="relative" ref={menuRef}>
                     <div
@@ -69,7 +76,14 @@ const Sidebar = () => {
             </div>
             <div className="flex flex-col m-6 gap-4 overflow-y-auto">
                 <div>
-                    <button className="flex gap-3 justify-items-center items-center hover:bg-[#BACAE8] w-full">
+                    <button
+                        className={`flex gap-3 justify-items-center items-center px-1 py-1 rounded-md w-full ${
+                            activeButton === '/home'
+                                ? 'bg-blue-500 text-white'
+                                : 'hover:bg-[#BACAE8]'
+                        }`}
+                        onClick={() => handleNavigation('/home')}
+                    >
                         <div>
                             <FaHome size={20} />
                         </div>
@@ -77,15 +91,22 @@ const Sidebar = () => {
                     </button>
                 </div>
                 <div>
-                    <button className="flex gap-3 justify-items-center items-center hover:bg-[#BACAE8] w-full">
+                    <button
+                        className={`flex gap-3 justify-items-center items-center px-1 py-1 rounded-md w-full ${
+                            activeButton === '/mission'
+                                ? 'bg-blue-500 text-white'
+                                : 'hover:bg-[#BACAE8]'
+                        }`}
+                        onClick={() => handleNavigation('/mission')}
+                    >
                         <div>
-                            <FaTasks size={20} />
+                            <AiOutlineAim size={20} />
                         </div>
-                        <div>Tasks</div>
+                        <div>Missions</div>
                     </button>
                 </div>
                 <div>
-                    <button className="flex gap-3 justify-items-center items-center hover:bg-[#BACAE8] w-full">
+                    <button className="flex gap-3 justify-items-center items-center px-1 py-1 rounded-md hover:bg-[#BACAE8] w-full">
                         <div>
                             <FaFire size={20} />
                         </div>

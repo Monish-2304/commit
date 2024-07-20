@@ -60,7 +60,7 @@ const Posts = () => {
 
     return (
         <div
-            className="z-1 h-screen flex flex-col  mt-16  px-8 relative top-8"
+            className="z-1 h-screen flex flex-col px-8 relative top-8"
             style={hideScrollbarStyle}
         >
             <svg width="0" height="0">
@@ -148,10 +148,7 @@ const Posts = () => {
                 </defs>
             </svg>
             {posts.map((post) => {
-                {
-                    /* const percentage = (post.streakCount / post.targetDays) * 100; */
-                }
-                const percentage = 80;
+                const percentage = (post.streakCount / post.targetDays) * 100;
                 const gradientId = getGradientId(percentage);
                 return (
                     <div
