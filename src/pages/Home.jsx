@@ -25,20 +25,16 @@ const Home = () => {
                     { withCredentials: true }
                 );
                 console.log('got user details', response.data);
-                setUserDetails(response.data);
+                setUserDetails(response?.data);
             } catch (error) {
                 console.log(error);
             }
         };
-        fetchUserDetails();
-    }, []);
+        if (user) fetchUserDetails();
+    }, [user]);
     return (
-        <div className="text-xl text-center text-[#7C6D76] flex h-screen w-screen bg-[#000000] overflow-x-hidden">
-            <div className="w-[18%] z-20">
-                <Sidebar />
-            </div>
-
-            <div className="relative flex flex-col gap-8 w-[82%] h-screen ">
+        <div className="w-[82%]text-xl text-center text-[#7C6D76] flex w-screen h-screen bg-[#000000] overflow-x-hidden overflow-y-scroll">
+            <div className="w-full ">
                 <StreakBar />
                 <Posts />
                 <div className="fixed bottom-8 right-8 cursor-pointer">
@@ -56,18 +52,11 @@ const Home = () => {
                                 handleClose={toggleModal}
                                 content={
                                     <AddPost
-                                        missions={userDetails.missions}
-                                        userId={userDetails.userId}
+                                        missions={userDetails?.missions}
+                                        userId={userDetails?.userId}
                                     />
                                 }
                             />
-
-                            {/* <button
-                                onClick={toggleModal}
-                                className="absolute top-3 right-2 text-gray-700"
-                            >
-                                <FaWindowClose size={20} color="white" />
-                            </button> */}
                         </div>
                     </div>
                 )}
