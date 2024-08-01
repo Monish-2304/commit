@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../redux/slices/authSlice';
+import Button from '../components/Button';
 const LoginPage = () => {
     console.count('inside login');
 
@@ -37,13 +38,13 @@ const LoginPage = () => {
         }
     };
     return (
-        <div>
+        <div className="pt-16">
             {loading && (
                 <p className="text-4xl text-black text-center">Loading...</p>
             )}
             {!loading && (
-                <div>
-                    <h2 className="text-center text-3xl mt-8">
+                <div className="pt-16">
+                    <h2 className="text-center text-3xl text-[#7C6D76]">
                         {!isLogin ? 'Signup' : 'Login'}
                     </h2>
                     <div className="flex justify-between">
@@ -188,7 +189,7 @@ const LoginPage = () => {
                                     width="w-1/2"
                                 />
                                 {isLogin && (
-                                    <h3>
+                                    <h3 className="text-[#7C6D76]">
                                         New Here?{' '}
                                         <Link
                                             to="/signup"
@@ -199,7 +200,7 @@ const LoginPage = () => {
                                     </h3>
                                 )}
                                 {!isLogin && (
-                                    <h3>
+                                    <h3 className="text-[#7C6D76]">
                                         Already have an account?{' '}
                                         <Link
                                             to="/login"
