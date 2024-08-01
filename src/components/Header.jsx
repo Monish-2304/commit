@@ -1,15 +1,9 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../redux/slices/authSlice';
-import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Header = ({ handleToggle }) => {
     const { user } = useSelector((state) => state.auth);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    useEffect(() => {}, [user]);
 
     return (
         <>
@@ -43,18 +37,6 @@ const Header = ({ handleToggle }) => {
                                     </button>
                                 </Link>
                             )}
-                            {/* {user && (
-                        <button
-                            onClick={() => {
-                                dispatch(logout());
-                                navigate('/login');
-                                Cookies.remove('jwtToken', { path: '/' });
-                            }}
-                            className=" cursor-pointer"
-                        >
-                            Logout
-                        </button>
-                    )} */}
                         </nav>
                     </div>
                 </div>

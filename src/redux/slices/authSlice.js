@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import secureLocalStorage from 'react-secure-storage';
+import Cookies from 'js-cookie';
 import { URLS } from '../../constants/common';
 const secretKey = process.env.REACT_APP_SECRET_KEY;
 
@@ -38,6 +39,28 @@ export const registerUser = createAsyncThunk(
             );
             return response.data;
         } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const validateToken = createAsyncThunk(
+    'auth/validateToken',
+    async (_, { rejectWithValue, getState }) => {
+        try {
+            const { token } = getState().auth;
+            const response = await axios.get(`${URLS.BASE_URL}/auth/validate`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+            });
+            return response.data;
+        } catch (error) {
+            console.error(
+                'Validation error:',
+                error.response?.data || error.message
+            );
             return rejectWithValue(error.response.data);
         }
     }
@@ -91,7 +114,7 @@ const authSlice = createSlice({
             .addCase(loginUser.rejected, (state, action) => {
                 console.log('error occured', action);
                 state.loading = false;
-                state.error = action.payload.message;
+                state.error = action.payload?.message;
             })
             .addCase(registerUser.pending, (state) => {
                 console.log('in pending');

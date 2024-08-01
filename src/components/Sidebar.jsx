@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaHome, FaTasks, FaFire, FaBars } from 'react-icons/fa';
+import { FaHome, FaFire, FaBars } from 'react-icons/fa';
 import { AiOutlineAim } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -8,15 +8,12 @@ import Cookies from 'js-cookie';
 
 const Sidebar = () => {
     const { user } = useSelector((state) => state.auth);
-    const [isOpen, setIsOpen] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const [activeButton, setActiveButton] = useState('/home');
     const dispatch = useDispatch();
     const menuRef = useRef(null);
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
+
     const openMenu = () => {
         setMenuOpen(!menuOpen);
     };

@@ -1,11 +1,8 @@
 import { FaCirclePlus } from 'react-icons/fa6';
-import { FaWindowClose } from 'react-icons/fa';
-import { BiSolidLike } from 'react-icons/bi';
-import Sidebar from '../components/Sidebar';
 import StreakBar from '../components/StreakBar';
 import Posts from '../components/Posts';
 import AddPost from '../components/AddPost';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Modal from '../components/Modal';
@@ -17,26 +14,29 @@ const Home = () => {
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
-    useEffect(() => {
-        const fetchUserDetails = async () => {
+    console.count('inside home');
+
+    const fetchUserDetails = useCallback(async () => {
+        if (user?.email) {
             try {
                 const response = await axios.get(
                     `http://localhost:5000/api/user/${user.email}`,
                     { withCredentials: true }
                 );
-                console.log('got user details', response.data);
-                setUserDetails(response?.data);
+                setUserDetails(response.data);
             } catch (error) {
-                console.log(error);
+                console.error('Error fetching user details:', error);
             }
-        };
-        if (user) fetchUserDetails();
+        }
+    }, [user]);
+    useEffect(() => {
+        fetchUserDetails();
     }, [user]);
     return (
         <div className="w-[82%]text-xl text-center text-[#7C6D76] flex w-screen h-screen bg-[#000000] overflow-x-hidden overflow-y-scroll">
             <div className="w-full ">
                 <StreakBar />
-                <Posts />
+                <Posts user={user} />
                 <div className="fixed bottom-8 right-8 cursor-pointer">
                     <FaCirclePlus
                         size={36}

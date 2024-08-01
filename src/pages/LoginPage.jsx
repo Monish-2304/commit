@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../redux/slices/authSlice';
 import Button from '../components/Button';
 const LoginPage = () => {
+    console.count('inside login');
+
     const location = useLocation();
     const isLogin = location.pathname === '/login';
     const dispatch = useDispatch();
@@ -26,7 +28,7 @@ const LoginPage = () => {
         if (user) {
             navigate('/home');
         }
-    }, [isLogin, reset, user]);
+    }, [reset, user, navigate]);
 
     const onSubmit = (data) => {
         if (isLogin) {
@@ -181,7 +183,11 @@ const LoginPage = () => {
                                             : null;
                                     }}
                                 />
-                                <Button text={!isLogin?'Sign up':'Login'} color='bg-[#BACAE8]' width='w-1/2'/>
+                                <Button
+                                    text={!isLogin ? 'Sign up' : 'Login'}
+                                    color="bg-[#BACAE8]"
+                                    width="w-1/2"
+                                />
                                 {isLogin && (
                                     <h3 className="text-[#7C6D76]">
                                         New Here?{' '}

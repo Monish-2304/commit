@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaFire } from 'react-icons/fa';
 
 const StreakBar = () => {
     return (
