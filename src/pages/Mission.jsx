@@ -1,7 +1,12 @@
 import React from 'react';
+import StreakBar from '../components/StreakBar';
 
 const Mission = () => {
-    return <div>Mission</div>;
+    return (
+        <div className="h-screen bg-black w-screen overflow-x-hidden">
+            <StreakBar title="Missions" />
+        </div>
+    );
 };
 
 export default Mission;

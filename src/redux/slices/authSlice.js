@@ -46,9 +46,9 @@ export const registerUser = createAsyncThunk(
 
 export const validateToken = createAsyncThunk(
     'auth/validateToken',
-    async (_, { rejectWithValue, getState }) => {
+    async (_, { rejectWithValue }) => {
         try {
-            const { token } = getState().auth;
+            const token = Cookies.get('jwtToken');
             const response = await axios.get(`${URLS.BASE_URL}/auth/validate`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -65,7 +65,26 @@ export const validateToken = createAsyncThunk(
         }
     }
 );
-
+export const logoutUser = createAsyncThunk(
+    'auth/logOut',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:5000/auth/logout`,
+                {
+                    withCredentials: true,
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error(
+                'Error while logging out',
+                error.response?.data || error.message
+            );
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -79,7 +98,7 @@ const authSlice = createSlice({
         loadUserFromStorage: (state) => {
             const token = secureLocalStorage.getItem('token', secretKey);
             const encryptedUser = secureLocalStorage.getItem('user', secretKey);
-            if (token && encryptedUser) {
+            if (encryptedUser) {
                 try {
                     const user = JSON.parse(encryptedUser);
                     state.token = token;
@@ -139,6 +158,51 @@ const authSlice = createSlice({
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload?.message || 'Registration failed';
+            })
+            .addCase(validateToken.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(validateToken.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+                const encryptedUser = secureLocalStorage.getItem(
+                    'user',
+                    secretKey
+                );
+                if (!encryptedUser) {
+                    secureLocalStorage.setItem(
+                        'user',
+                        JSON.stringify(action.payload.user),
+                        secretKey
+                    );
+                }
+                state.user = action.payload.user;
+            })
+            .addCase(validateToken.rejected, (state, action) => {
+                state.loading = false;
+                state.user = null;
+                state.token = null;
+                state.error = action.payload?.message || 'Validation failed';
+                secureLocalStorage.removeItem('token', secretKey);
+                secureLocalStorage.removeItem('user', secretKey);
+            })
+            .addCase(logoutUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(logoutUser.fulfilled, (state) => {
+                console.log('Logout successful, clearing state');
+                state.loading = false;
+                state.user = null;
+                state.token = null;
+                state.error = null;
+                secureLocalStorage.removeItem('token', secretKey);
+                secureLocalStorage.removeItem('user', secretKey);
+            })
+            .addCase(logoutUser.rejected, (state) => {
+                state.loading = false;
+                state.error = action.payload?.message || 'Failed to log out';
             });
     },
 });

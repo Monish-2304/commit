@@ -1,8 +1,7 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const AddPost = ({ missions, userId }) => {
-    console.log('missions and userId', missions, userId);
     const [selectedMission, setSelectedMission] = useState('');
     const [description, setDescription] = useState('');
 
@@ -56,7 +55,7 @@ const AddPost = ({ missions, userId }) => {
                     value={selectedMission}
                     onChange={handleSelectChange}
                 >
-                    <option value="" disabled selected hidden>
+                    <option disabled hidden value="">
                         Choose Mission
                     </option>
                     {missions?.map((mission) => (

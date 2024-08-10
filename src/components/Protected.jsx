@@ -1,26 +1,35 @@
 import React, { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { validateToken } from '../redux/slices/authSlice';
+import {
+    loadUserFromStorage,
+    logout,
+    validateToken,
+} from '../redux/slices/authSlice';
 import Sidebar from './Sidebar';
 const Protected = () => {
     const dispatch = useDispatch();
-    const { user, loading, error } = useSelector((state) => state.auth);
-
+    const navigate = useNavigate();
+    const { user, error, loading } = useSelector((state) => state.auth);
     useEffect(() => {
-        console.count('Protected component mounted');
+        dispatch(loadUserFromStorage());
         dispatch(validateToken());
-    }, []);
+    }, [dispatch]);
+    useEffect(() => {
+        if (error) {
+            dispatch(logout());
+            navigate('/login');
+        }
+    }, [error, user, dispatch, navigate]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-    if (error || !user) {
-        console.log('i entered error in protected', error, user);
-        return <Navigate to="/login" />;
-    }
+    if (loading)
+        return (
+            <div className="h-screen bg-black text-center flex justify-center items-center self-center text-4xl text-blue-500">
+                Loading...
+            </div>
+        );
 
-    return (
+    return user ? (
         <>
             <div className="flex">
                 <div className="min-w-[18%]">
@@ -29,7 +38,7 @@ const Protected = () => {
                 <Outlet />
             </div>
         </>
-    );
+    ) : null;
 };
 
 export default Protected;

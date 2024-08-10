@@ -4,7 +4,11 @@ import classNames from 'classnames';
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, registerUser } from '../redux/slices/authSlice';
+import {
+    loadUserFromStorage,
+    loginUser,
+    registerUser,
+} from '../redux/slices/authSlice';
 import Button from '../components/Button';
 const LoginPage = () => {
     console.count('inside login');
@@ -22,7 +26,9 @@ const LoginPage = () => {
     } = useForm({
         criteriaMode: 'all',
     });
-
+    useEffect(() => {
+        dispatch(loadUserFromStorage());
+    }, []);
     useEffect(() => {
         reset();
         if (user) {
@@ -37,11 +43,11 @@ const LoginPage = () => {
             dispatch(registerUser(data));
         }
     };
+    const googleSignIn = () => {
+        window.location.href = 'http://localhost:5000/auth/google';
+    };
     return (
         <div className="pt-16">
-            {loading && (
-                <p className="text-4xl text-black text-center">Loading...</p>
-            )}
             {!loading && (
                 <div className="pt-16">
                     <h2 className="text-center text-3xl text-[#7C6D76]">
@@ -184,9 +190,17 @@ const LoginPage = () => {
                                     }}
                                 />
                                 <Button
+                                    type="submit"
                                     text={!isLogin ? 'Sign up' : 'Login'}
                                     color="bg-[#BACAE8]"
-                                    width="w-1/2"
+                                    width="w-3/4"
+                                />
+                                <Button
+                                    type="button"
+                                    text="SignIn With Google"
+                                    color="bg-red-600"
+                                    width="w-3/4"
+                                    onClick={googleSignIn}
                                 />
                                 {isLogin && (
                                     <h3 className="text-[#7C6D76]">
@@ -223,9 +237,5 @@ const LoginPage = () => {
         </div>
     );
 };
-
-// LoginPage.propTypes = {
-//     isLogin: PropTypes.bool.isRequired,
-// };
 
 export default LoginPage;

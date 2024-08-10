@@ -1,12 +1,10 @@
-import React from 'react';
+import Header from './Header';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
 
-const HeaderLayout = () => {
+const HeaderLayout = ({ handleToggle }) => {
     return (
         <>
-            <Sidebar />
-            <div>hello wworld</div>
+            <Header handleToggle={handleToggle} />
             <Outlet />
         </>
     );
