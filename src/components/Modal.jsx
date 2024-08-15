@@ -30,7 +30,7 @@ const Modal = ({ showModal, handleClose, content, width }) => {
                         className={`bg-slate-900 rounded-lg shadow-lg relative ${width}`}
                     >
                         <IoCloseSharp
-                            className="text-gray-600 hover:text-black cursor-pointer absolute top-2 right-2 text-2xl font-bold"
+                            className="text-gray-300 text-bold hover:scale-125 hover:text-red-600 cursor-pointer absolute top-2 right-2 text-2xl font-bold"
                             onClick={handleClose}
                         />
                         {content}

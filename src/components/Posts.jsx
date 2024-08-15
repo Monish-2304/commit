@@ -5,13 +5,10 @@ import Fire from './Fire';
 
 const Posts = ({ user }) => {
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const hideScrollbarStyle = {
         msOverflowStyle: 'none',
         scrollbarWidth: 'none',
     };
-    console.count('inside posts component');
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -20,10 +17,8 @@ const Posts = ({ user }) => {
                     { withCredentials: true, email: user.email }
                 );
                 setPosts(response.data);
-                setLoading(false);
             } catch (err) {
                 setError(err.message);
-                setLoading(false);
             }
         };
         fetchPosts();
@@ -40,9 +35,15 @@ const Posts = ({ user }) => {
                         key={post._id}
                         className="bg-black text-white px-4 flex flex-col items-start rounded-md"
                     >
-                        <hr className=" text-white w-full" />
                         <div className="flex gap-4 m-4 items-center">
-                            <div className="w-8 h-8 rounded-full bg-[#E7B1A6]"></div>
+                            {post.user.profilePicture ? (
+                                <img
+                                    src={post.user.profilePicture}
+                                    className="w-8 h-8 rounded-full"
+                                />
+                            ) : (
+                                <div className="w-8 h-8 rounded-full bg-[#E7B1A6]"></div>
+                            )}
                             <div>{post.user.userName}</div>
                             <div></div>
                         </div>
@@ -69,6 +70,7 @@ const Posts = ({ user }) => {
                                 <div>{post.streakCount}</div>
                             </button>
                         </div>
+                        <hr className=" text-white w-full" />
                     </div>
                 );
             })}
