@@ -18,7 +18,7 @@ const StyledFaFire = styled(FaFire)`
     }
 `;
 
-const Fire = ({ streakCount, targetDays, ...props }) => {
+const Fire = ({ streakCount, targetDays, size = 20, ...props }) => {
     const [gradientId, setGradientId] = useState('');
 
     useEffect(() => {
@@ -127,7 +127,7 @@ const Fire = ({ streakCount, targetDays, ...props }) => {
                     </linearGradient>
                 </defs>
             </svg>
-            <StyledFaFire gradient={gradientId} {...props} />
+            <StyledFaFire size={size} gradient={gradientId} {...props} />
         </>
     );
 };
