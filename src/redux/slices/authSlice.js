@@ -10,6 +10,7 @@ const initialState = {
     token: null,
     loading: false,
     error: null,
+    isLoggingOut: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -17,7 +18,7 @@ export const loginUser = createAsyncThunk(
     async (credentials, { rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `${URLS.BASE_URL}/auth/login`,
+                `${URLS.BASE_API_URL}/auth/login`,
                 credentials,
                 { withCredentials: true }
             );
@@ -33,7 +34,7 @@ export const registerUser = createAsyncThunk(
     async (credentials, { rejectWithValue }) => {
         try {
             const response = await axios.post(
-                `${URLS.BASE_URL}/auth/register`,
+                `${URLS.BASE_API_URL}/auth/register`,
                 credentials,
                 { withCredentials: true }
             );
@@ -46,15 +47,22 @@ export const registerUser = createAsyncThunk(
 
 export const validateToken = createAsyncThunk(
     'auth/validateToken',
-    async (_, { rejectWithValue }) => {
+    async (_, { getState, rejectWithValue }) => {
+        const state = getState();
+        if (state.auth.isLoggingOut) {
+            return rejectWithValue('Logout in progress');
+        }
         try {
             const token = Cookies.get('jwtToken');
-            const response = await axios.get(`${URLS.BASE_URL}/auth/validate`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
+            const response = await axios.get(
+                `${URLS.BASE_API_URL}/auth/validate`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                }
+            );
             return response.data;
         } catch (error) {
             console.error(
@@ -69,12 +77,9 @@ export const logoutUser = createAsyncThunk(
     'auth/logOut',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get(
-                `http://localhost:5000/auth/logout`,
-                {
-                    withCredentials: true,
-                }
-            );
+            const response = await axios.get(`${URLS.BASE_AUTH_URL}/logout`, {
+                withCredentials: true,
+            });
             return response.data;
         } catch (error) {
             console.error(
@@ -107,6 +112,9 @@ const authSlice = createSlice({
                     console.error('Failed to parse user from storage:', error);
                 }
             }
+        },
+        setLoggingOut: (state, action) => {
+            state.isLoggingOut = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -197,6 +205,7 @@ const authSlice = createSlice({
                 state.user = null;
                 state.token = null;
                 state.error = null;
+                state.isLoggingOut = false;
                 secureLocalStorage.removeItem('token', secretKey);
                 secureLocalStorage.removeItem('user', secretKey);
             })
@@ -207,6 +216,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { logout, loadUserFromStorage } = authSlice.actions;
+export const { logout, loadUserFromStorage, setLoggingOut } = authSlice.actions;
 
 export default authSlice.reducer;

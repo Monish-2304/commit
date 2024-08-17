@@ -3,7 +3,7 @@ import { FaHome, FaFire, FaBars } from 'react-icons/fa';
 import { AiOutlineAim } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { logoutUser } from '../redux/slices/authSlice';
+import { logoutUser, setLoggingOut } from '../redux/slices/authSlice';
 
 const Sidebar = () => {
     const { user } = useSelector((state) => state.auth);
@@ -33,6 +33,7 @@ const Sidebar = () => {
         navigate(path);
     };
     const handleLogout = () => {
+        dispatch(setLoggingOut(true));
         dispatch(logoutUser());
     };
     return (

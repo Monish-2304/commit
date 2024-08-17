@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Modal from '../components/Modal';
+import { URLS } from '../constants/common';
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +22,7 @@ const Home = () => {
             if (user?.email) {
                 try {
                     const response = await axios.get(
-                        `http://localhost:5000/api/user/${user.email}`,
+                        `${URLS.BASE_API_URL}/user/${user.email}`,
                         { withCredentials: true }
                     );
                     setUserDetails(response.data);

@@ -10,9 +10,8 @@ import {
     registerUser,
 } from '../redux/slices/authSlice';
 import Button from '../components/Button';
+import { URLS } from '../constants/common';
 const LoginPage = () => {
-    console.count('inside login');
-
     const location = useLocation();
     const isLogin = location.pathname === '/login';
     const dispatch = useDispatch();
@@ -31,10 +30,10 @@ const LoginPage = () => {
     }, []);
     useEffect(() => {
         reset();
-        if (user) {
+        if (user && !loading && !error) {
             navigate('/home');
         }
-    }, [reset, user, navigate]);
+    }, [reset, user, loading, error, navigate]);
 
     const onSubmit = (data) => {
         if (isLogin) {
@@ -44,7 +43,7 @@ const LoginPage = () => {
         }
     };
     const googleSignIn = () => {
-        window.location.href = 'http://localhost:5000/auth/google';
+        window.location.href = `${URLS.BASE_AUTH_URL}/google`;
     };
     return (
         <div className="pt-16">

@@ -10,18 +10,26 @@ import Sidebar from './Sidebar';
 const Protected = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, error, loading } = useSelector((state) => state.auth);
+    const { user, error, loading, isLoggingOut } = useSelector(
+        (state) => state.auth
+    );
     useEffect(() => {
-        dispatch(loadUserFromStorage());
-        dispatch(validateToken());
-    }, [dispatch]);
+        if (!user && !loading && !isLoggingOut) {
+            dispatch(loadUserFromStorage());
+            dispatch(validateToken());
+        }
+    }, [user, loading, dispatch, isLoggingOut]);
     useEffect(() => {
-        if (error) {
+        if (error && !isLoggingOut) {
             dispatch(logout());
             navigate('/login');
         }
-    }, [error, user, dispatch, navigate]);
-
+    }, [error, user, isLoggingOut, dispatch, navigate]);
+    useEffect(() => {
+        if (isLoggingOut) {
+            navigate('/login');
+        }
+    }, [isLoggingOut, navigate]);
     if (loading)
         return (
             <div className="h-screen bg-black text-center flex justify-center items-center self-center text-4xl text-blue-500">
