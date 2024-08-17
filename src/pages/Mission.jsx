@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Toggle from '../components/Toggle';
 import { FaCircleInfo } from 'react-icons/fa6';
+import { URLS } from '../constants/common';
 const Mission = () => {
     const [missions, setMissions] = useState([]);
     const [layout, setLayout] = useState([]);
@@ -33,11 +34,11 @@ const Mission = () => {
             try {
                 const [missionsResponse, layoutResponse] = await Promise.all([
                     axios.get(
-                        `http://localhost:5000/api/mission/getAllMissions?userId=${user._id}`,
+                        `${URLS.BASE_API_URL}/mission/getAllMissions?userId=${user._id}`,
                         { withCredentials: true }
                     ),
                     axios.post(
-                        `http://localhost:5000/api/mission/getLayout`,
+                        `${URLS.BASE_API_URL}/mission/getLayout`,
                         { userId: user._id },
                         { withCredentials: true }
                     ),
@@ -153,7 +154,7 @@ const Mission = () => {
     const saveLayoutToServer = async (newLayout) => {
         try {
             const response = await axios.post(
-                `http://localhost:5000/api/mission/saveLayout`,
+                `${URLS.BASE_API_URL}/mission/saveLayout`,
                 {
                     userId: user._id,
                     layout: newLayout,
@@ -183,7 +184,7 @@ const Mission = () => {
     const handleAddMission = async (newMission) => {
         try {
             const response = await axios.post(
-                'http://localhost:5000/api/mission/createMission',
+                `${URLS.BASE_API_URL}/mission/createMission`,
                 newMission,
                 { withCredentials: true }
             );
@@ -241,16 +242,18 @@ const Mission = () => {
                             onClick={toggleInfoModal}
                         />
                     </div>
-                    <div
-                        onClick={() => {
-                            setIsTilesView(!isTilesView);
-                        }}
-                    >
-                        <Toggle
-                            onToggleChange={handleToggle}
-                            label={'Tiles View'}
-                            defaultToggled={isTilesView}
-                        />
+                    <div className="flex space-x-4">
+                        <h4 className="text-white text-base">Tiles View</h4>
+                        <div
+                            onClick={() => {
+                                setIsTilesView(!isTilesView);
+                            }}
+                        >
+                            <Toggle
+                                onToggleChange={handleToggle}
+                                defaultToggled={isTilesView}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

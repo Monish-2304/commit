@@ -10,6 +10,7 @@ import {
     registerUser,
 } from '../redux/slices/authSlice';
 import Button from '../components/Button';
+import { URLS } from '../constants/common';
 const LoginPage = () => {
     const location = useLocation();
     const isLogin = location.pathname === '/login';
@@ -42,7 +43,7 @@ const LoginPage = () => {
         }
     };
     const googleSignIn = () => {
-        window.location.href = 'http://localhost:5000/auth/google';
+        window.location.href = `${URLS.BASE_AUTH_URL}/google`;
     };
     return (
         <div className="pt-16">
