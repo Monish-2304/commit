@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
 import Fire from './Fire';
+import { URLS } from '../constants/common';
 
 const Posts = ({ user }) => {
     const [posts, setPosts] = useState([]);
@@ -13,7 +14,7 @@ const Posts = ({ user }) => {
         const fetchPosts = async () => {
             try {
                 const response = await axios.post(
-                    'http://localhost:5000/api/post/getAllPosts',
+                    `${URLS.BASE_API_URL}/post/getAllPosts`,
                     { withCredentials: true, email: user.email }
                 );
                 setPosts(response.data);

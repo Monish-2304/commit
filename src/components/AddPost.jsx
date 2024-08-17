@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-
+import { URLS } from '../constants/common';
 const AddPost = ({ missions, userId }) => {
     const [selectedMission, setSelectedMission] = useState('');
     const [description, setDescription] = useState('');
@@ -14,7 +14,6 @@ const AddPost = ({ missions, userId }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (selectedMission == '' || selectedMission == null) {
-            console.log('you did not select any mission');
             return;
         }
         const postData = {
@@ -25,7 +24,7 @@ const AddPost = ({ missions, userId }) => {
 
         try {
             const response = await axios.post(
-                'http://localhost:5000/api/post/createPost',
+                `${URLS.BASE_API_URL}/post/createPost`,
                 postData
             );
             console.log('Post created successfully', response.data);
